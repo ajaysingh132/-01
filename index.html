@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBSBFORYOU Official Typing AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI','Noto Sans Devanagari',sans-serif}
+        body{background:#f4f7fc;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+        .app-container{max-width:800px;width:100%;background:#fff;border-radius:32px;box-shadow:0 20px 60px rgba(0,20,40,0.12);padding:30px}
+        .header{display:flex;align-items:center;gap:12px;border-bottom:3px solid #1a3c6e;padding-bottom:18px;margin-bottom:30px}
+        .header h1{font-size:26px;font-weight:800;color:#1a3c6e}.header h1 i{color:#e67e22;margin-right:8px}
+        .header .sub{margin-left:auto;background:#eef2f7;padding:6px 16px;border-radius:30px;font-size:13px;font-weight:600;color:#2c3e50}
+        .screen{display:none;animation:fadeIn .3s ease}.screen.active{display:block}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        label{display:block;font-weight:600;font-size:14px;color:#1e293b;margin-bottom:5px;margin-top:16px}label .required{color:#e74c3c}
+        select,input,textarea{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:14px;font-size:15px;background:#fff;transition:.2s}
+        select:focus,input:focus,textarea:focus{outline:0;border-color:#1a3c6e;box-shadow:0 0 0 4px rgba(26,60,110,0.1)}
+        textarea{min-height:100px;resize:vertical}
+        .btn{padding:16px 28px;border:0;border-radius:14px;font-size:18px;font-weight:700;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%}
+        .btn-primary{background:#1a3c6e;color:#fff}.btn-primary:hover{background:#0f2a4a}
+        .btn-success{background:#27ae60;color:#fff}.btn-success:hover{background:#1e8449}
+        .btn-outline{background:0 0;color:#1a3c6e;border:2px solid #1a3c6e}.btn-outline:hover{background:#f0f5ff}
+        .btn-secondary{background:#e2e8f0;color:#1e293b}.btn-secondary:hover{background:#cbd5e1}
+        .flex-row{display:flex;gap:12px;margin-top:20px}.flex-row .btn{flex:1}
+        .doc-preview{background:#fafbfc;border:2px solid #e2e8f0;border-radius:16px;padding:30px 25px;min-height:400px;white-space:pre-wrap;font-family:'Times New Roman',serif;font-size:16px;line-height:1.9;margin-top:10px}
+        .placeholder-text{color:#94a3b8;text-align:center;padding:40px 0}
+        .footer{margin-top:30px;text-align:center;font-size:12px;color:#94a3b8;border-top:1px solid #e2e8f0;padding-top:20px}.footer span{color:#e67e22;font-weight:700}
+        @media print{body{background:#fff;padding:0}.app-container{box-shadow:none}.no-print{display:none!important}#screen1,#screen2{display:none!important}#screen3{display:block!important}}
+        @media(max-width:500px){.flex-row{flex-direction:column}}
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="header">
+        <h1><i class="fas fa-gavel"></i> GBSBFORYOU</h1>
+        <span class="sub"><i class="fas fa-file-alt"></i> Official Typing AI (Lite)</span>
+    </div>
+    <!-- SCREEN 1 -->
+    <div id="screen1" class="screen active">
+        <h2 style="font-size:22px;margin-bottom:20px;color:#0f2a4a;"><i class="fas fa-chevron-circle-right" style="color:#e67e22;"></i> चरण 1: दस्तावेज़ चुनें</h2>
+        <label>श्रेणी <span class="required">*</span></label>
+        <select id="categorySelect">
+            <option value="government">🏛️ सरकारी</option><option value="court">⚖️ न्यायालय</option><option value="office">📋 कार्यालय</option>
+            <option value="hr">👔 HR</option><option value="education">🎓 शिक्षा</option><option value="business">💼 व्यवसाय</option>
+            <option value="banking">🏦 बैंकिंग</option><option value="personal">✉️ व्यक्तिगत</option>
+        </select>
+        <label>दस्तावेज़ प्रकार <span class="required">*</span></label>
+        <select id="typeSelect"></select>
+        <label>भाषा <span class="required">*</span></label>
+        <select id="langSelect"><option value="hi">हिन्दी</option><option value="en">English</option><option value="mr">मराठी</option></select>
+        <button class="btn btn-primary" id="goToFormBtn" style="margin-top:30px;"><i class="fas fa-arrow-right"></i> आगे बढ़ें</button>
+    </div>
+    <!-- SCREEN 2 -->
+    <div id="screen2" class="screen">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h2 style="font-size:22px;color:#0f2a4a;"><i class="fas fa-pen-alt" style="color:#e67e22;"></i> चरण 2: जानकारी भरें</h2>
+            <button class="btn btn-secondary" id="backToScreen1" style="width:auto;padding:8px 18px;font-size:14px;"><i class="fas fa-arrow-left"></i> वापस</button>
+        </div>
+        <div style="background:#f8fafc;padding:15px;border-radius:12px;margin:10px 0;border-left:4px solid #1a3c6e;">
+            <i class="fas fa-info-circle"></i> <span id="docTypeDisplay">आवेदन</span> ( <span id="docCatDisplay">सरकारी</span> )
+        </div>
+        <div id="dynamicForm"></div>
+        <button class="btn btn-success" id="generateDocBtn"><i class="fas fa-magic"></i> दस्तावेज़ जनरेट करें</button>
+    </div>
+    <!-- SCREEN 3 -->
+    <div id="screen3" class="screen">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h2 style="font-size:22px;color:#0f2a4a;"><i class="fas fa-file-check" style="color:#27ae60;"></i> चरण 3: दस्तावेज़</h2>
+            <button class="btn btn-secondary" id="backToScreen2" style="width:auto;padding:8px 18px;font-size:14px;"><i class="fas fa-edit"></i> संपादन</button>
+        </div>
+        <div class="doc-preview" id="docPreview"><div class="placeholder-text"><i class="fas fa-spinner fa-pulse" style="font-size:30px;display:block;"></i> दस्तावेज़ तैयार हो रहा...</div></div>
+        <div class="flex-row no-print">
+            <button class="btn btn-primary" id="printBtn"><i class="fas fa-print"></i> प्रिंट / PDF</button>
+            <button class="btn btn-success" id="downloadDocBtn"><i class="fas fa-file-word"></i> DOCX</button>
+        </div>
+        <button class="btn btn-outline" id="newDocBtn" style="margin-top:10px;"><i class="fas fa-plus-circle"></i> नया दस्तावेज़</button>
+    </div>
+    <div class="footer"><i class="fas fa-shield-alt"></i> सुरक्षित · <i class="fas fa-language"></i> मल्टी-भाषा · Generated by <span>GBSBFORYOU</span> AI</div>
+</div>
+<script>
+(function(){
+    const DOC_TYPES={
+        government:{label:'सरकारी',types:[{id:'app',label:'आवेदन'},{id:'rti',label:'RTI'},{id:'complaint',label:'शिकायत'},{id:'affidavit_gov',label:'शपथ पत्र'},{id:'memorandum',label:'ज्ञापन'}]},
+        court:{label:'न्यायालय',types:[{id:'petition',label:'याचिका'},{id:'legal_notice',label:'कानूनी नोटिस'},{id:'affidavit_court',label:'शपथ पत्र'},{id:'bail_app',label:'ज़मानत'},{id:'vakalat',label:'वकालतनामा'}]},
+        office:{label:'कार्यालय',types:[{id:'official_letter',label:'आधिकारिक पत्र'},{id:'office_order',label:'कार्यालय आदेश'},{id:'circular',label:'परिपत्र'},{id:'memo',label:'ज्ञापन'}]},
+        hr:{label:'HR',types:[{id:'appointment',label:'नियुक्ति'},{id:'experience',label:'अनुभव प्रमाण'},{id:'relieving',label:'अवमुक्ति'},{id:'warning',label:'चेतावनी'}]},
+        education:{label:'शिक्षा',types:[{id:'bonafide',label:'बोनाफाइड'},{id:'character',label:'चरित्र प्रमाण'},{id:'leave_edu',label:'अवकाश'},{id:'scholarship',label:'छात्रवृत्ति'}]},
+        business:{label:'व्यवसाय',types:[{id:'quotation',label:'कोटेशन'},{id:'invoice',label:'इनवॉइस'},{id:'agreement',label:'समझौता'},{id:'mou',label:'MoU'}]},
+        banking:{label:'बैंकिंग',types:[{id:'loan_app',label:'ऋण आवेदन'},{id:'noc',label:'NOC'},{id:'acc_close',label:'खाता बंद'},{id:'addr_change',label:'पता परिवर्तन'}]},
+        personal:{label:'व्यक्तिगत',types:[{id:'leave_personal',label:'अवकाश'},{id:'permission',label:'अनुमति'},{id:'authorization',label:'प्राधिकरण'},{id:'invitation',label:'निमंत्रण'}]}
+    };
+    const FIELD_CONFIG={
+        name:{label:'आवेदक/नाम',type:'text'},father:{label:'पिता/पति',type:'text'},address:{label:'पता',type:'textarea'},
+        mobile:{label:'मोबाइल',type:'text'},subject:{label:'विषय',type:'text'},description:{label:'विवरण',type:'textarea'},
+        attachments:{label:'संलग्नक',type:'text'},petitioner:{label:'याचिकाकर्ता',type:'text'},respondent:{label:'प्रतिवादी',type:'text'},
+        case_no:{label:'वाद संख्या',type:'text'},designation:{label:'पदनाम',type:'text'},joining_date:{label:'कार्यारंभ तिथि',type:'date'},
+        salary:{label:'वेतन',type:'text'},amount:{label:'राशि',type:'text'},party_name:{label:'पक्षकार',type:'text'}
+    };
+    const TYPE_FIELDS={
+        app:['name','father','address','mobile','subject','description','attachments'],
+        rti:['name','father','address','subject','description','attachments'],
+        complaint:['name','father','address','mobile','subject','description','attachments'],
+        affidavit_gov:['name','father','address','subject','description'],
+        memorandum:['name','subject','description'],
+        petition:['petitioner','respondent','case_no','subject','description'],
+        legal_notice:['petitioner','respondent','subject','description','attachments'],
+        affidavit_court:['name','father','address','subject','description'],
+        bail_app:['petitioner','case_no','subject','description'],
+        vakalat:['name','address','case_no'],
+        official_letter:['name','subject','description','attachments'],
+        office_order:['subject','description'],
+        circular:['subject','description'],
+        memo:['name','subject','description'],
+        appointment:['name','designation','joining_date','salary','subject'],
+        experience:['name','designation','subject','description'],
+        relieving:['name','designation','subject'],
+        warning:['name','designation','subject','description'],
+        bonafide:['name','father','address','subject'],
+        character:['name','father','address'],
+        leave_edu:['name','subject','description'],
+        scholarship:['name','father','address','subject','description'],
+        quotation:['party_name','subject','amount','description'],
+        invoice:['party_name','subject','amount','description'],
+        agreement:['party_name','subject','description'],
+        mou:['party_name','subject','description'],
+        loan_app:['name','father','address','mobile','subject','amount'],
+        noc:['name','address','subject'],
+        acc_close:['name','address','subject'],
+        addr_change:['name','address','subject'],
+        leave_personal:['name','subject','description'],
+        permission:['name','subject','description'],
+        authorization:['name','subject','description'],
+        invitation:['name','subject','description','attachments']
+    };
+    const s1=document.getElementById('screen1'),s2=document.getElementById('screen2'),s3=document.getElementById('screen3');
+    const catSel=document.getElementById('categorySelect'),typeSel=document.getElementById('typeSelect');
+    const goBtn=document.getElementById('goToFormBtn'),back1=document.getElementById('backToScreen1'),back2=document.getElementById('backToScreen2');
+    const dynForm=document.getElementById('dynamicForm'),genBtn=document.getElementById('generateDocBtn');
+    const preview=document.getElementById('docPreview'),printBtn=document.getElementById('printBtn'),downBtn=document.getElementById('downloadDocBtn'),newBtn=document.getElementById('newDocBtn');
+    const docTypeDisp=document.getElementById('docTypeDisplay'),docCatDisp=document.getElementById('docCatDisplay');
+    function showScreen(id){[s1,s2,s3].forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+    function populateTypes(){const cat=catSel.value,types=DOC_TYPES[cat]?.types||[];typeSel.innerHTML='';types.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.label;typeSel.appendChild(o);});}
+    function buildForm(){const cat=catSel.value,type=typeSel.value;docTypeDisp.textContent=typeSel.options[typeSel.selectedIndex]?.text||'दस्तावेज़';docCatDisp.textContent=DOC_TYPES[cat]?.label||'';const fields=TYPE_FIELDS[type]||['name','subject','description'];let html='';fields.forEach(id=>{const cfg=FIELD_CONFIG[id];if(!cfg)return;const req=(id==='name'||id==='subject'||id==='description'||id==='petitioner'||id==='respondent')?' <span class="required">*</span>':'';const input=cfg.type==='textarea'?`<textarea id="field_${id}" placeholder="${cfg.label} दर्ज करें..."></textarea>`:`<input type="${cfg.type}" id="field_${id}" placeholder="${cfg.label} दर्ज करें...">`;html+=`<label>${cfg.label}${req}</label>${input}`;});dynForm.innerHTML=html;}
+    function generateDocument(){const type=typeSel.value,fields=TYPE_FIELDS[type]||[];const data={};fields.forEach(id=>{const el=document.getElementById(`field_${id}`);data[id]=el?el.value.trim():'__________';});const n=data.name||data.petitioner||data.party_name||'__________';const f=data.father||'__________',a=data.address||'__________',m=data.mobile||'__________';const s=data.subject||'__________',d=data.description||'__________',at=data.attachments||'कोई नहीं';const r=data.respondent||'__________',cn=data.case_no||'__________',ds=data.designation||'__________';const date=new Date().toLocaleDateString('hi-IN',{day:'2-digit',month:'2-digit',year:'numeric'});const amt=data.amount||'__________';let c='';if(type==='app'||type==='rti'||type==='complaint'){const h=type==='app'?'आवेदन':(type==='rti'?'RTI आवेदन':'शिकायत');c=`कार्यालय: _________\nदिनांक: ${date}\n\n**${h}**\nविषय: ${s}\n\nसेवा में,\n_________\n_________\n\nमैं, ${n}, पुत्र/पुत्री ${f}, निवासी ${a}, मोबाइल ${m}, निवेदन करता/करती हूँ:\n\n${d}\n\nअतः उचित कार्रवाई करें।\nसंलग्नक: ${at}\n\nदिनांक: ${date}\n\n                                                    भवदीय,\n                                                    ${n}\n                                                    (आवेदक)`;}else if(type==='legal_notice'||type==='petition'||type==='bail_app'){const h=type==='legal_notice'?'कानूनी नोटिस':(type==='petition'?'याचिका':'ज़मानत आवेदन');c=`**IN THE COURT OF _________ **\nCase No.: ${cn}\n\n**${h}**\n\nयाचिकाकर्ता: ${n}\nप्रतिवादी: ${r}\n\n**विषय:** ${s}\n\n${d}\n\n**प्रार्थना:**\nअतः न्यायालय उचित आदेश पारित करें।\n\nदिनांक: ${date}\n\n                                                    (${n})\n                                                    याचिकाकर्ता`;}else if(type==='affidavit_gov'||type==='affidavit_court'){c=`**शपथ पत्र**\n\nमैं, ${n}, पुत्र/पत्नी ${f}, निवासी ${a}, शपथ लेकर कहता/कहती हूँ:\n1. वयस्क एवं स्वस्थ हूँ।\n2. ${d}\n\n**सत्यापन:** दिनांक ${date}\n                                                    ${n}\n                                                    (शपथकर्ता)`;}else if(type==='appointment'){c=`**नियुक्ति पत्र**\n\nदिनांक: ${date}\n\nप्रिय ${n},\nआपको ${ds} पद पर नियुक्त किया गया है।\nकार्यारंभ: ${data.joining_date||'__________'}\nवेतन: ${salary||'__________'}\n\nहस्ताक्षर करें।\n                                                    (प्रबंधक)`;}else if(type==='experience'){c=`**अनुभव प्रमाण पत्र**\n\nप्रमाणित किया जाता है कि ${n}, ${ds} पद पर कार्य किया।\n${d}\n\nदिनांक: ${date}\n                                                    (प्रबंधक)`;}else if(type==='quotation'||type==='invoice'){const h=type==='quotation'?'कोटेशन':'इनवॉइस';c=`**${h}**\nदिनांक: ${date}\nपक्षकार: ${data.party_name||'__________'}\nविषय: ${s}\n\n${d}\n\nकुल राशि: ₹ ${amt}\n\nहस्ताक्षरकर्ता,\n${n}`;}else if(type==='office_order'||type==='circular'||type==='memo'){const h=type==='office_order'?'कार्यालय आदेश':(type==='circular'?'परिपत्र':'कार्यालय ज्ञापन');c=`**${h}**\nदिनांक: ${date}\nविषय: ${s}\n\n${d}\n\n                                                    (अधिकारी)`;}else if(type==='character'){c=`**चरित्र प्रमाण पत्र**\n\nप्रमाणित किया जाता है कि ${n}, पुत्र/पुत्री ${f}, निवासी ${a}, सदाचारी हैं।\n\nदिनांक: ${date}\n                                                    (प्रधानाचार्य)`;}else{c=`**${docTypeDisp.textContent}**\nदिनांक: ${date}\nविषय: ${s}\n\n${d}\n\nनाम: ${n}\nपता: ${a}\n\nहस्ताक्षर: __________`;}return c.replace(/\n{3,}/g,'\n\n').trim();}
+    catSel.addEventListener('change',populateTypes);goBtn.addEventListener('click',()=>{buildForm();showScreen('screen2');});back1.addEventListener('click',()=>showScreen('screen1'));back2.addEventListener('click',()=>showScreen('screen2'));
+    genBtn.addEventListener('click',()=>{const content=generateDocument();preview.innerHTML=`<pre style="white-space:pre-wrap;font-family:'Times New Roman',serif;font-size:16px;line-height:1.9;margin:0;">${content}</pre>`;showScreen('screen3');});
+    newBtn.addEventListener('click',()=>{showScreen('screen1');preview.innerHTML=`<div class="placeholder-text"><i class="fas fa-file-alt" style="font-size:40px;display:block;color:#ddd;"></i> दस्तावेज़ यहाँ दिखेगा...</div>`;});
+    printBtn.addEventListener('click',()=>window.print());
+    downBtn.addEventListener('click',()=>{const content=preview.innerText;if(!content||content.includes('दस्तावेज़ यहाँ')||content.includes('तैयार हो रहा')) return alert('पहले दस्तावेज़ जनरेट करें।');const style=`<style>body{font-family:'Times New Roman',serif;margin:1.5in;font-size:16pt;line-height:1.8;}</style>`;const html=`<html><head><meta charset="utf-8">${style}</head><body><pre style="white-space:pre-wrap;font-family:'Times New Roman',serif;font-size:16pt;">${content}</pre></body></html>`;const blob=new Blob([html],{type:'application/msword'});const link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=`GBSBFORYOU_${docTypeDisp.textContent.replace(/\s/g,'_')}.doc`;link.click();URL.revokeObjectURL(link.href);});
+    populateTypes();
+})();
+</script>
+</body>
+</html>
